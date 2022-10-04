@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+green_palette = ['#344c11', '#778d45', '#5c7c24', '#9ec650', '#20a447']
 
 class Field:
     def __init__(self, x, y):
@@ -9,7 +10,9 @@ class Field:
         self._has_obstacle = False
         self._has_player = False
         self._visited = False
-        self.color = (random.randint(10, 100), random.randint(10, 100), random.randint(10, 100))
+        self.color = random.choice(green_palette)
+        # yellow shades
+        self._viscolor = (random.randint(245, 255), random.randint(226, 255), random.randint(30, 103))
         self.x = x
         self.y = y
         self.size = ...
@@ -22,12 +25,23 @@ class Field:
 
         rect = pygame.Rect(x_coord, y_coord, block_size, block_size)
         color = self.color
+
         if self._visited:
-            color = (200, 0, 0)
+            color = self._viscolor
+
         if self._has_obstacle:
-            color = (0, 0, 0)
+            imp = pygame.image.load("hribik.png").convert()
+            imp = pygame.transform.scale(imp, (block_size, block_size))
+            screen.blit(imp, (x_coord, y_coord, block_size, block_size))
+            return
+
         if self._has_player:
-            color = (255, 255, 255)
+ 
+            # create a surface object, image is drawn on it.
+            imp = pygame.image.load("slimak.png").convert()
+            imp = pygame.transform.scale(imp, (block_size, block_size))
+            screen.blit(imp, (x_coord, y_coord, block_size, block_size))
+            return
 
         pygame.draw.rect(screen, color, rect)
 

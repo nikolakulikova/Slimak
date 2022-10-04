@@ -10,8 +10,8 @@ class Game:
     fields = dict()
     max_x = 0
     max_y = 0
-    window_width = 400
-    window_height = 400
+    window_width = 450
+    window_height = 450
 
     def __init__(self, file_path, screen):
         self.player = None
