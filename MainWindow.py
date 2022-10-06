@@ -20,7 +20,9 @@ class MainWindow:
         self.font = pygame.font.SysFont('Arial', 25)
 
         pygame.draw.rect(self.screen, 'white', pygame.Rect(10, 200, 130, 200))
-        self.screen.blit(self.font.render('Nema riesenie', True, (0,50,0)), (10, 200))
+        self.screen.blit(self.font.render('Zadanie:', True, (0,50,0)), (10, 200))
+        self.screen.blit(self.font.render('Nema riesenie', True, (0, 50, 0)), (10, 410))
+        pygame.draw.rect(self.screen, 'darkgreen', [5, 410, 140, 60], 5)
 
         game_screen = self.screen.subsurface(rect_game)
         filepath = "mapa1.txt"
