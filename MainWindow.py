@@ -42,6 +42,7 @@ class MainWindow:
     def main_loop(self):
         while True:
             self.game.main_loop()
+            self.menu.main_loop()
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     ## if mouse is pressed get position of cursor ##
@@ -49,8 +50,7 @@ class MainWindow:
                     if self.solution_button.collidepoint(pos):
                         #toDo nejaka info ci dobre oznacil, mne nejde dat pop up window mac hadze chybu
                         print('aaa')
-
-
+            pygame.display.update()
 
 
 
