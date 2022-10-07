@@ -90,3 +90,7 @@ class Game:
         for x in range(Game.max_x):
             for y in range(Game.max_y):
                 Game.fields[(x, y)].draw(self.screen)
+
+    def check_hamilton(self):
+        #ToDo nejaka logika grafov
+        ...
