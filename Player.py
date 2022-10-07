@@ -1,6 +1,7 @@
 class Player:
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.path = [[x,y]]
 
     def move(self, new_x, new_y):
         from Game import Game
@@ -10,6 +11,7 @@ class Player:
         Game.fields[(self.x, self.y)].set_has_player(False)
         self.x = new_x
         self.y = new_y
+        self.path.append([new_x, new_y])
         Game.fields[(new_x, new_y)].set_has_player(True)
 
     def can_move(self, new_x, new_y):
