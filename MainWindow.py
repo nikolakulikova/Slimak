@@ -1,5 +1,6 @@
 import pygame
-
+import tkinter as tk
+from tkinter import ttk
 from Game import Game
 from MenuWindow import MenuWindow
 
@@ -21,7 +22,7 @@ class MainWindow:
 
         pygame.draw.rect(self.screen, 'white', pygame.Rect(10, 200, 130, 200))
         self.screen.blit(self.font.render('Zadanie:', True, (0, 50, 0)), (10, 200))
-        self.screen.blit(self.font.render('Nema riesenie', True, (0, 50, 0)), (10, 410))
+        self.solution_button = self.screen.blit(self.font.render('Nema riesenie', True, (0, 50, 0)), (10, 410))
         pygame.draw.rect(self.screen, 'darkgreen', [5, 410, 140, 60], 5)
 
         game_screen = self.screen.subsurface(rect_game)
@@ -33,6 +34,24 @@ class MainWindow:
         # self.menu.main_loop()
 
 
-        self.game.main_loop()
+        # self.game.main_loop()
+        self.main_loop()
         self.clock = pygame.time.Clock()
         self.screen.fill((0, 0, 0))
+
+    def main_loop(self):
+        while True:
+            self.game.main_loop()
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    ## if mouse is pressed get position of cursor ##
+                    pos = pygame.mouse.get_pos()
+                    if self.solution_button.collidepoint(pos):
+                        #toDo nejaka info ci dobre oznacil, mne nejde dat pop up window mac hadze chybu
+                        print('aaa')
+
+
+
+
+
+
