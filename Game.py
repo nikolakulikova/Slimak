@@ -12,6 +12,7 @@ class Game:
     max_y = 0
     window_width = 450
     window_height = 450
+    mode = "experimental"
 
     def __init__(self, file_path, screen):
         self.player = None
@@ -65,25 +66,25 @@ class Game:
                         Game.fields[(x, y)].add_neighbour(Game.fields[(new_x, new_y)])
 
     def main_loop(self):
-            self.draw_grid()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    print(self.fields)
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    x, y = self.player.coordinates()
-                    new_x, new_y = x, y
-                    if event.key == pygame.K_LEFT:
-                        new_x = x - 1
-                    if event.key == pygame.K_RIGHT:
-                        new_x = x + 1
-                    if event.key == pygame.K_UP:
-                        new_y = y - 1
-                    if event.key == pygame.K_DOWN:
-                        new_y = y + 1
-                    self.player.move(new_x, new_y)
-            pygame.display.update()
+        self.draw_grid()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print(self.fields)
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                x, y = self.player.coordinates()
+                new_x, new_y = x, y
+                if event.key == pygame.K_LEFT:
+                    new_x = x - 1
+                if event.key == pygame.K_RIGHT:
+                    new_x = x + 1
+                if event.key == pygame.K_UP:
+                    new_y = y - 1
+                if event.key == pygame.K_DOWN:
+                    new_y = y + 1
+                self.player.move(new_x, new_y)
+        pygame.display.update()
 
     def draw_grid(self):
         for x in range(Game.max_x):
