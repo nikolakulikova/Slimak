@@ -65,7 +65,6 @@ class Game:
                         Game.fields[(x, y)].add_neighbour(Game.fields[(new_x, new_y)])
 
     def main_loop(self):
-        while True:
             self.draw_grid()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
