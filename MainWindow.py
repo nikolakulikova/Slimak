@@ -20,10 +20,9 @@ class MainWindow:
 
         self.font = pygame.font.SysFont('Arial', 25)
 
-        pygame.draw.rect(self.screen, 'white', pygame.Rect(10, 200, 130, 200))
-        self.screen.blit(self.font.render('Zadanie:', True, (0, 50, 0)), (10, 200))
         self.solution_button = self.screen.blit(self.font.render('Nema riesenie', True, (0, 50, 0)), (10, 410))
-        pygame.draw.rect(self.screen, 'darkgreen', [5, 410, 140, 60], 5)
+
+        self.has_solution = True
 
         game_screen = self.screen.subsurface(rect_game)
         filepath = "mapa1.txt"
@@ -41,15 +40,28 @@ class MainWindow:
 
     def main_loop(self):
         while True:
-            self.game.main_loop()
+
             self.menu.main_loop()
+            self.game.main_loop()
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     ## if mouse is pressed get position of cursor ##
                     pos = pygame.mouse.get_pos()
-                    if self.solution_button.collidepoint(pos):
-                        #toDo nejaka info ci dobre oznacil, mne nejde dat pop up window mac hadze chybu
-                        print('aaa')
+                    if 5 < pos[0] < 180 and 410 < pos[1] < 430:
+                        if Game.mode == 'experimental':
+                            self.has_solution = not self.has_solution
+                            if self.has_solution:
+                                pygame.draw.rect(self.screen, 'darkgreen', [5, 410, 140, 60], 5)
+                            else:
+                                pygame.draw.rect(self.screen, '#E8CAB0', [5, 410, 140, 60], 5)
+                        else:
+                            ...
+                            # toDo nejaka info ci dobre oznacil, mne nejde dat pop up window mac hadze chybu
+
+                            print('aaa')
+                    if self.save_button:
+                        if self.save_button.collidepoint(pos):
+                            Game.save_as_file('solution.txt', self.has_solution)
             pygame.display.update()
 
 
