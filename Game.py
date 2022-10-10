@@ -12,7 +12,7 @@ class Game:
     max_y = 0
     window_width = 450
     window_height = 450
-    mode = "experimental"
+    mode = "test"
 
     def __init__(self, file_path, screen):
         self.player = None
@@ -72,18 +72,33 @@ class Game:
                 print(self.fields)
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                x, y = self.player.coordinates()
-                new_x, new_y = x, y
-                if event.key == pygame.K_LEFT:
-                    new_x = x - 1
-                if event.key == pygame.K_RIGHT:
-                    new_x = x + 1
-                if event.key == pygame.K_UP:
-                    new_y = y - 1
-                if event.key == pygame.K_DOWN:
-                    new_y = y + 1
-                self.player.move(new_x, new_y)
+            if self.mode == 'test':
+                if event.type == pygame.KEYDOWN:
+                    x, y = self.player.coordinates()
+                    new_x, new_y = x, y
+                    if event.key == pygame.K_LEFT:
+                        new_x = x - 1
+                    if event.key == pygame.K_RIGHT:
+                        new_x = x + 1
+                    if event.key == pygame.K_UP:
+                        new_y = y - 1
+                    if event.key == pygame.K_DOWN:
+                        new_y = y + 1
+                    self.player.move(new_x, new_y)
+            else:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    print(pos)
+                    if 5 < pos[0] < 180 and 410 < pos[1] < 430:
+                        continue
+                    block_size = Game.window_width // Game.max_x
+                    x = (pos[0] - 150) // block_size
+                    y = (pos[1] - 150) // block_size
+                    try:
+                        Game.fields[(x, y)].on_click()
+                    except:
+                        print('change mode')
+                        self.mode = 'test'
         pygame.display.update()
 
     def draw_grid(self):

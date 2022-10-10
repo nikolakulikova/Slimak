@@ -45,6 +45,9 @@ class Field:
 
         pygame.draw.rect(screen, color, rect)
 
+    def on_click(self):
+       self.set_has_obstacle(True)
+
     def add_neighbour(self, neighbour):
         self._neighbours.append(neighbour)
 
