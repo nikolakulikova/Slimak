@@ -27,6 +27,10 @@ class MainWindow:
         game_screen = self.screen.subsurface(rect_game)
         filepath = "mapa1.txt"
         self.game = Game(filepath, game_screen)
+        if Game.mode == 'experimental':
+            self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (10, 200))
+        else:
+            self.save_button = None
 
         menu_screen = self.screen.subsurface(rect_menu)
         self.menu = MenuWindow(menu_screen)
