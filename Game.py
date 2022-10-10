@@ -109,3 +109,15 @@ class Game:
     def check_hamilton(self):
         #ToDo nejaka logika grafov
         ...
+
+    def save_as_file(self, name, has_solution):
+        with open(name, 'w') as file:
+            file.write(str(self.max_x) + " " + str(self.max_y) + "\n")
+            file.write(str(0) + " " + str(0) + "\n")
+            file.write(str(has_solution) + "\n")
+            for x in range(Game.max_x):
+                for y in range(Game.max_y):
+                    if Game.fields[(x, y)].has_obstacle():
+                        file.write(str(x) + " " + str(y) + "\n")
+
+
