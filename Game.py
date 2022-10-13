@@ -85,6 +85,7 @@ class Game:
                     if event.key == pygame.K_DOWN:
                         new_y = y + 1
                     self.player.move(new_x, new_y)
+                    pygame.display.update()
             else:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
@@ -96,15 +97,17 @@ class Game:
                     y = (pos[1] - 150) // block_size
                     try:
                         Game.fields[(x, y)].on_click()
+                        pygame.display.update()
                     except:
                         print('change mode')
                         self.mode = 'test'
-        pygame.display.update()
+                        pygame.display.update()
 
     def draw_grid(self):
         for x in range(Game.max_x):
             for y in range(Game.max_y):
                 Game.fields[(x, y)].draw(self.screen)
+        pygame.display.update()
 
     def check_hamilton(self):
         #ToDo nejaka logika grafov
