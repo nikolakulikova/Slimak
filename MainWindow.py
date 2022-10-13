@@ -25,7 +25,7 @@ class MainWindow:
         self.has_solution = True
 
         game_screen = self.screen.subsurface(rect_game)
-        filepath = "mapa1.txt"
+        filepath = "mapa9.txt"
         self.game = Game(filepath, game_screen)
         if Game.mode == 'experimental':
             self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (10, 200))
