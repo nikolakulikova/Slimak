@@ -63,10 +63,11 @@ class MainWindow:
                             # toDo nejaka info ci dobre oznacil, mne nejde dat pop up window mac hadze chybu
 
                             print('aaa')
+                        pygame.display.update()
                     if self.save_button:
                         if self.save_button.collidepoint(pos):
                             Game.save_as_file('solution.txt', self.has_solution)
-            pygame.display.update()
+                            pygame.display.update()
 
 
 
