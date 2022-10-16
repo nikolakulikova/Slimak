@@ -14,39 +14,40 @@ class Game:
     window_height = 450
     mode = "test"
 
-    def __init__(self, file_path, screen):
-        self.player = None
-        self.has_solution = True
+    player = None
+    has_solution = True
+    screen = None
 
-        # key: (x, y), value: Field
-        self.load_game(file_path)
+    @classmethod
+    def initialize(cls, file_path, screen):
+        cls.screen = screen
+        cls.screen.fill((0, 0, 0))
 
-        # Pygame stuff
-        self.screen = screen
-        self.screen.fill((0, 0, 0))
+        cls.load_game(file_path)
 
-
-    def load_game(self, file_path):
+    @classmethod
+    def load_game(cls, file_path):
         with open(file_path, 'r') as file:
             for index, line in enumerate(file):
                 if index == 0:
                     max_x, max_y = [int(e) for e in line.split(" ")]
-                    self.initialize_fields(max_x, max_y)
+                    Game.initialize_fields(max_x, max_y)
                     Game.max_y, Game.max_x = max_y, max_x
                     continue
                 if index == 1:
                     x, y = [int(e) for e in line.split(" ")]
                     Game.fields[(x, y)].set_has_player(True)
-                    self.player = Player(x, y)
+                    cls.player = Player(x, y)
                     continue
                 if index == 2:
-                    self.has_solution = line
+                    cls.has_solution = line
                     continue
                 x, y = [int(e) for e in line.split(" ")]
                 Game.fields[(x, y)].set_has_obstacle(True)
         print("loaded")
 
-    def initialize_fields(self, max_x, max_y):
+    @staticmethod
+    def initialize_fields(max_x, max_y):
         Game.fields = dict()
         for x in range(max_x):
             for y in range(max_y):
@@ -65,16 +66,17 @@ class Game:
                             continue
                         Game.fields[(x, y)].add_neighbour(Game.fields[(new_x, new_y)])
 
-    def main_loop(self):
-        self.draw_grid()
+    @classmethod
+    def main_loop(cls):
+        cls.draw_grid()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print(self.fields)
+                print(cls.fields)
                 pygame.quit()
                 sys.exit()
-            if self.mode == 'test':
+            if cls.mode == 'test':
                 if event.type == pygame.KEYDOWN:
-                    x, y = self.player.coordinates()
+                    x, y = cls.player.coordinates()
                     new_x, new_y = x, y
                     if event.key == pygame.K_LEFT:
                         new_x = x - 1
@@ -84,7 +86,7 @@ class Game:
                         new_y = y - 1
                     if event.key == pygame.K_DOWN:
                         new_y = y + 1
-                    self.player.move(new_x, new_y)
+                    cls.player.move(new_x, new_y)
                     pygame.display.update()
             else:
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -95,27 +97,26 @@ class Game:
                     block_size = Game.window_width // Game.max_x
                     x = (pos[0] - 150) // block_size
                     y = (pos[1] - 150) // block_size
-                    try:
+                    if (x, y) in Game.fields:
                         Game.fields[(x, y)].on_click()
                         pygame.display.update()
-                    except:
-                        print('change mode')
-                        self.mode = 'test'
-                        pygame.display.update()
 
-    def draw_grid(self):
+    @classmethod
+    def draw_grid(cls):
         for x in range(Game.max_x):
             for y in range(Game.max_y):
-                Game.fields[(x, y)].draw(self.screen)
+                Game.fields[(x, y)].draw(cls.screen)
         pygame.display.update()
 
-    def check_hamilton(self):
+    @classmethod
+    def check_hamilton(cls):
         #ToDo nejaka logika grafov
         ...
 
-    def save_as_file(self, name, has_solution):
+    @classmethod
+    def save_as_file(cls, name, has_solution):
         with open(name, 'w') as file:
-            file.write(str(self.max_x) + " " + str(self.max_y) + "\n")
+            file.write(str(cls.max_x) + " " + str(cls.max_y) + "\n")
             file.write(str(0) + " " + str(0) + "\n")
             file.write(str(has_solution) + "\n")
             for x in range(Game.max_x):
