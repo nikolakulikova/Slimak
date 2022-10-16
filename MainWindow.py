@@ -1,3 +1,5 @@
+import time
+
 import pygame
 import tkinter as tk
 from tkinter import ttk
@@ -8,6 +10,7 @@ from MenuWindow import MenuWindow
 class MainWindow:
     window_width = 600
     window_height = 600
+
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Slimak - Minisoft 1")
@@ -26,7 +29,7 @@ class MainWindow:
 
         game_screen = self.screen.subsurface(rect_game)
         filepath = "mapa9.txt"
-        self.game = Game(filepath, game_screen)
+        Game.initialize(filepath, game_screen)
         if Game.mode == 'experimental':
             self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (10, 200))
         else:
@@ -34,41 +37,34 @@ class MainWindow:
 
         menu_screen = self.screen.subsurface(rect_menu)
         self.menu = MenuWindow(menu_screen)
-        # self.menu.main_loop()
-
-
-        # self.game.main_loop()
         self.main_loop()
         self.clock = pygame.time.Clock()
         self.screen.fill((0, 0, 0))
 
     def main_loop(self):
         while True:
-
             self.menu.main_loop()
-            self.game.main_loop()
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    ## if mouse is pressed get position of cursor ##
-                    pos = pygame.mouse.get_pos()
-                    if 5 < pos[0] < 180 and 410 < pos[1] < 430:
-                        if Game.mode == 'experimental':
-                            self.has_solution = not self.has_solution
-                            if self.has_solution:
-                                pygame.draw.rect(self.screen, 'darkgreen', [5, 410, 140, 60], 5)
-                            else:
-                                pygame.draw.rect(self.screen, '#E8CAB0', [5, 410, 140, 60], 5)
+            Game.main_loop()
+            buttons = pygame.mouse.get_pressed()
+
+            if any(buttons):  # for any mouse button
+                pos = pygame.mouse.get_pos()
+                if self.solution_button.collidepoint(pos):
+                    if Game.mode == 'experimental':
+                        self.has_solution = not self.has_solution
+                        if not self.has_solution:
+                            pygame.draw.rect(self.screen, 'darkgreen', [5, 410, 140, 60], 5)
                         else:
-                            ...
-                            # toDo nejaka info ci dobre oznacil, mne nejde dat pop up window mac hadze chybu
-
-                            print('aaa')
+                            pygame.draw.rect(self.screen, '#E8CAB0', [5, 410, 140, 60], 5)
                         pygame.display.update()
-                    if self.save_button:
-                        if self.save_button.collidepoint(pos):
-                            Game.save_as_file('solution.txt', self.has_solution)
-                            pygame.display.update()
+                        time.sleep(0.5)
+                    else:
+                        ...
+                        # toDo nejaka info ci dobre oznacil, mne nejde dat pop up window mac hadze chybu
 
-
+                if self.save_button:
+                    if self.save_button.collidepoint(pos):
+                        Game.save_as_file('solution.txt', self.has_solution)
+                        pygame.display.update()
 
 
