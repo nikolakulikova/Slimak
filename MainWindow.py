@@ -22,6 +22,9 @@ class MainWindow:
         self.screen.fill('#E8CAB0')
 
         self.font = pygame.font.SysFont('Arial', 25)
+        self.screen.blit(self.font.render('Prejdi slimákom cez', True, (0, 50, 0)), (10, 200))
+        self.screen.blit(self.font.render('všetky políčka a', True, (0, 50, 0)), (10, 250))
+        self.screen.blit(self.font.render('vyhni sa prekážkam.', True, (0, 50, 0)), (10, 300))
 
         self.solution_button = self.screen.blit(self.font.render('Nema riesenie', True, (0, 50, 0)), (10, 410))
 
