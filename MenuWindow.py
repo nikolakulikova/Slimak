@@ -39,8 +39,8 @@ class MenuWindow:
                 pygame.draw.rect(self.screen, '#D1A38C', [10, 10, 200, 60], 5)
                 pygame.draw.rect(self.screen, 'darkgreen', [250, 10, 250, 60], 5)
                 Game.has_solution = True
-                Game.max_x = 10
-                Game.max_y = 10
+                Game.max_x = 6
+                Game.max_y = 6
                 Game.initialize_fields(Game.max_x, Game.max_y)
                 Game.fields[(0, 0)].set_has_player(True)
                 Game.player = Player(0, 0)

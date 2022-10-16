@@ -110,8 +110,31 @@ class Game:
 
     @classmethod
     def check_hamilton(cls):
-        #ToDo nejaka logika grafov
-        ...
+        begin_v = cls.fields[(0,0)]
+
+        number_of_fields_without_obstacles = 0
+        for field in cls.fields.values():
+            if not field.has_obstacle():
+                number_of_fields_without_obstacles += 1
+
+        print(number_of_fields_without_obstacles)
+        visited = set()
+        
+        def backtrack(beg_v):
+            visited.add(beg_v)
+            if len(visited) == number_of_fields_without_obstacles:
+                return True
+
+            for v in beg_v._neighbours:
+                if v in visited or v.has_obstacle():
+                    continue
+                if backtrack(v):
+                    return True
+
+            visited.remove(beg_v)
+            return False
+
+        return backtrack(begin_v)
 
     @classmethod
     def save_as_file(cls, name, has_solution):
