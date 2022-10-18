@@ -15,7 +15,7 @@ class Game:
     mode = "test"
 
     player = None
-    has_solution = True
+    has_solution = None
     screen = None
 
     @classmethod
@@ -40,7 +40,7 @@ class Game:
                     cls.player = Player(x, y)
                     continue
                 if index == 2:
-                    cls.has_solution = line
+                    cls.has_solution = True if line == 'True' else False
                     continue
                 x, y = [int(e) for e in line.split(" ")]
                 Game.fields[(x, y)].set_has_obstacle(True)
