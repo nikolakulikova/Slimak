@@ -18,12 +18,22 @@ class Game:
     has_solution = None
     screen = None
 
+    total_number_of_free_fields = 0
+
     @classmethod
     def initialize(cls, file_path, screen):
         cls.screen = screen
         cls.screen.fill((0, 0, 0))
 
         cls.load_game(file_path)
+
+        cls.total_number_of_free_fields = 0
+        for field in cls.fields.values():
+            if not field._has_obstacle:
+                cls.total_number_of_free_fields += 1
+
+        print(cls.total_number_of_free_fields)
+
 
     @classmethod
     def load_game(cls, file_path):
@@ -40,7 +50,9 @@ class Game:
                     cls.player = Player(x, y)
                     continue
                 if index == 2:
-                    cls.has_solution = True if line == 'True' else False
+                    cls.has_solution = True if line.strip() == 'True' else False
+                    print(cls.has_solution)
+                    print(line)
                     continue
                 x, y = [int(e) for e in line.split(" ")]
                 Game.fields[(x, y)].set_has_obstacle(True)

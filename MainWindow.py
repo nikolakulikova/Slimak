@@ -3,7 +3,7 @@ from turtle import color, window_height, window_width
 
 import pygame
 import tkinter as tk
-from tkinter import ttk
+from tkinter import Menu, ttk
 from Game import Game
 from MenuWindow import MenuWindow
 
@@ -11,6 +11,7 @@ from MenuWindow import MenuWindow
 class MainWindow:
     window_width = 600
     window_height = 600
+    solved_level = [False] * 10
 
     def __init__(self):
         pygame.init()
@@ -33,10 +34,6 @@ class MainWindow:
         self.solution_button = self.screen.blit(imp, (0, 410))
 
         self.level_number = 1
-
-        # self.solution_button = self.screen.blit(self.font.render('Nema riesenie', True, (0, 50, 0)), (10, 410))
-
-
         self.has_solution = True
 
         game_screen = self.screen.subsurface(self.rect_game)
@@ -56,6 +53,8 @@ class MainWindow:
 
         menu_screen = self.screen.subsurface(self.rect_menu)
         self.menu = MenuWindow(menu_screen)
+        self.font = pygame.font.SysFont('Arial', 30)
+        self.level_and_score = self.screen.blit(self.font.render('level 1   skóre:0/10', True, (0, 50, 0)), (30, 80))
         self.main_loop()
         self.clock = pygame.time.Clock()
         self.screen.fill((0, 0, 0))
@@ -87,30 +86,28 @@ class MainWindow:
                             imp = pygame.image.load("spravne.png").convert()
                             imp = pygame.transform.scale(imp, (150, 45))
                             self.solution_button = self.screen.blit(imp, (0, 410))
+
+                            self.solved_level[self.level_number-1] = True
+
+                            self.update_level_and_score()
                         
                 if not Game.mode == 'experimental' and self.restart_button.collidepoint(pos):
-                    game_screen = self.screen.subsurface(self.rect_game)
-                    filepath = filepath = "mapa" + str(self.level_number) + ".txt"
-                    Game.initialize(filepath, game_screen)
-
-                    imp = pygame.image.load("neni_riesenia.png").convert()
-                    imp = pygame.transform.scale(imp, (150, 45))
-                    self.solution_button = self.screen.blit(imp, (0, 410))
+                    self.load_game()
 
                 if not Game.mode == 'experimental' and self.next_button.collidepoint(pos):
                     self.level_number += 1
                     if self.level_number > 10:
-                        # TODO: koniec hry nejkay ukazat
+                        self.level_number -= 1
+                        score = 0
+                        for lvl in self.solved_level:
+                            if lvl:
+                                score+=1
+                        self.screen.fill(pygame.Color("#D1A38C"), (30, 80, self.window_width, 40))
+                        self.level_and_score = self.screen.blit(self.font.render('Hurá! Prešiel si všetky levely. Tvoje skóre je: ' +str(score)+'/10', True, (0, 50, 0)), (30, 80))
                         continue
-                        print('neni dalsi')
-                    game_screen = self.screen.subsurface(self.rect_game)
-                    filepath = filepath = "mapa" + str(self.level_number) + ".txt"
-                    Game.initialize(filepath, game_screen)
 
-                    imp = pygame.image.load("neni_riesenia.png").convert()
-                    imp = pygame.transform.scale(imp, (150, 45))
-                    self.solution_button = self.screen.blit(imp, (0, 410))
-                    time.sleep(0.5)
+                    self.update_level_and_score()
+                    self.load_game()
 
 
                 if Game.mode == 'experimental':
@@ -123,4 +120,31 @@ class MainWindow:
                         Game.save_as_file('solution.txt', self.has_solution)
                         pygame.display.update()
 
+            if not self.solved_level[self.level_number-1] and Game.total_number_of_free_fields == len(Game.player.path):
+                self.solved_level[self.level_number-1] = True
+                imp = pygame.image.load("spravne.png").convert()
+                imp = pygame.transform.scale(imp, (150, 45))
+                self.solution_button = self.screen.blit(imp, (0, 410))
 
+                self.update_level_and_score()
+                time.sleep(0.5)
+
+    def load_game(self):
+        game_screen = self.screen.subsurface(self.rect_game)
+        filepath = filepath = "mapa" + str(self.level_number) + ".txt"
+        Game.initialize(filepath, game_screen)
+        print('*', Game.has_solution)
+
+        imp = pygame.image.load("neni_riesenia.png").convert()
+        imp = pygame.transform.scale(imp, (150, 45))
+        self.solution_button = self.screen.blit(imp, (0, 410))
+        time.sleep(0.5)
+
+    def update_level_and_score(self):
+        self.screen.fill(pygame.Color("#D1A38C"), (30, 80, self.window_width, 40))
+        score = 0
+        for lvl in self.solved_level:
+            if lvl:
+                score+=1
+        self.level_and_score = self.screen.blit(self.font.render('level '+str(self.level_number)+
+        '   skóre:'+str(score)+'/10', True, (0, 50, 0)), (30, 80))

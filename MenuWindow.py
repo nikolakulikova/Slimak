@@ -20,7 +20,7 @@ class MenuWindow:
         imp = pygame.transform.scale(imp, (250, 60))
         self.experiment = screen.blit(imp, (250, 10))
 
-        pygame.draw.rect(self.screen, 'darkgreen', [10, 10, 200, 60], 5)
+        pygame.draw.rect(self.screen, 'darkgreen', [10, 10, 200, 60], 5)                        
         # pygame.draw.rect(self.screen, 'white', pygame.Rect(10, 200, 130, 200))
 
     def main_loop(self):

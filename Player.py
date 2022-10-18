@@ -14,6 +14,8 @@ class Player:
         self.path.append([new_x, new_y])
         Game.fields[(new_x, new_y)].set_has_player(True)
 
+        print(len(self.path))
+
     def can_move(self, new_x, new_y):
         from Game import Game
         if new_x < 0 or new_x >= Game.max_x:
