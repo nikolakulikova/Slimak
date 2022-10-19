@@ -86,32 +86,30 @@ class Game:
                 print(cls.fields)
                 pygame.quit()
                 sys.exit()
-            if cls.mode == 'test':
-                if event.type == pygame.KEYDOWN:
-                    x, y = cls.player.coordinates()
-                    new_x, new_y = x, y
-                    if event.key == pygame.K_LEFT:
-                        new_x = x - 1
-                    if event.key == pygame.K_RIGHT:
-                        new_x = x + 1
-                    if event.key == pygame.K_UP:
-                        new_y = y - 1
-                    if event.key == pygame.K_DOWN:
-                        new_y = y + 1
-                    cls.player.move(new_x, new_y)
+            if event.type == pygame.KEYDOWN:
+                x, y = cls.player.coordinates()
+                new_x, new_y = x, y
+                if event.key == pygame.K_LEFT:
+                    new_x = x - 1
+                if event.key == pygame.K_RIGHT:
+                    new_x = x + 1
+                if event.key == pygame.K_UP:
+                    new_y = y - 1
+                if event.key == pygame.K_DOWN:
+                    new_y = y + 1
+                cls.player.move(new_x, new_y)
+                pygame.display.update()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                print(pos)
+                if 5 < pos[0] < 180 and 410 < pos[1] < 430:
+                    continue
+                block_size = Game.window_width // Game.max_x
+                x = (pos[0] - 150) // block_size
+                y = (pos[1] - 150) // block_size
+                if (x, y) in Game.fields:
+                    Game.fields[(x, y)].on_click()
                     pygame.display.update()
-            else:
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    print(pos)
-                    if 5 < pos[0] < 180 and 410 < pos[1] < 430:
-                        continue
-                    block_size = Game.window_width // Game.max_x
-                    x = (pos[0] - 150) // block_size
-                    y = (pos[1] - 150) // block_size
-                    if (x, y) in Game.fields:
-                        Game.fields[(x, y)].on_click()
-                        pygame.display.update()
 
     @classmethod
     def draw_grid(cls):
