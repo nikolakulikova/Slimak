@@ -36,6 +36,7 @@ class MenuWindow:
             if self.experiment.collidepoint(pos):
                 # todo nema riesenie dat prec oramovanie nech moze vybrat, pridanie zadania a ulozenie
                 Game.mode = "experimental"
+                self.screen.fill(pygame.Color("#D1A38C"), (30, 80, self.window_width, 40))
                 pygame.draw.rect(self.screen, '#D1A38C', [10, 10, 200, 60], 5)
                 pygame.draw.rect(self.screen, 'darkgreen', [250, 10, 250, 60], 5)
                 Game.has_solution = True
