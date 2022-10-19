@@ -107,7 +107,7 @@ class Game:
                 block_size = Game.window_width // Game.max_x
                 x = (pos[0] - 150) // block_size
                 y = (pos[1] - 150) // block_size
-                if (x, y) in Game.fields:
+                if (x, y) in Game.fields and not Game.fields[(x, y)].has_player():
                     Game.fields[(x, y)].on_click()
                     pygame.display.update()
 
