@@ -122,16 +122,16 @@ class MainWindow:
                         Game.save_as_file('solution.txt', self.has_solution)
                         pygame.display.update()
                         print('ulozilo')
+            if Game.mode == "test":
+                if not self.solved_level[self.level_number - 1] and Game.total_number_of_free_fields == len(
+                        Game.player.path):
+                    self.solved_level[self.level_number - 1] = True
+                    imp = pygame.image.load("spravne.png").convert()
+                    imp = pygame.transform.scale(imp, (150, 45))
+                    self.solution_button = self.screen.blit(imp, (0, 410))
 
-            if not self.solved_level[self.level_number - 1] and Game.total_number_of_free_fields == len(
-                    Game.player.path):
-                self.solved_level[self.level_number - 1] = True
-                imp = pygame.image.load("spravne.png").convert()
-                imp = pygame.transform.scale(imp, (150, 45))
-                self.solution_button = self.screen.blit(imp, (0, 410))
-
-                self.update_level_and_score()
-                time.sleep(0.5)
+                    self.update_level_and_score()
+                    time.sleep(0.5)
 
     def load_game(self):
         game_screen = self.screen.subsurface(self.rect_game)
