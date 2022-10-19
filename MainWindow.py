@@ -69,13 +69,10 @@ class MainWindow:
                 pos = pygame.mouse.get_pos()
                 if self.solution_button.collidepoint(pos):
                     if Game.mode == 'experimental':
-                        self.has_solution = not self.has_solution
-                        if not self.has_solution:
-                            pygame.draw.rect(self.screen, 'darkgreen', [0, 410, 150, 50], 5)
-                        else:
-                            pygame.draw.rect(self.screen, '#E8CAB0', [0, 410, 150, 50], 5)
-                        pygame.display.update()
-                        time.sleep(0.5)
+                        ...
+                        # self.screen.fill(pygame.Color("#E8CAB0"), (0, 410, 150, 50))
+                        # pygame.display.update()
+                        # time.sleep(0.5)
                     else:
                         if Game.has_solution:
                             imp = pygame.image.load("nespravne.png").convert()
@@ -113,13 +110,18 @@ class MainWindow:
 
                 if Game.mode == 'experimental':
                     self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (20, 560))
+                    self.screen.fill(pygame.Color("#E8CAB0"), (0, 410, 150, 50))
                 else:
                     self.save_button = None
+                    imp = pygame.image.load("neni_riesenia.png").convert()
+                    imp = pygame.transform.scale(imp, (150, 45))
+                    self.solution_button = self.screen.blit(imp, (0, 410))
                     self.screen.fill(pygame.Color("#E8CAB0"), (20, 560, 100, 40))
+                    self.update_level_and_score()
 
                 if self.save_button is not None:
                     if self.save_button.collidepoint(pos):
-                        Game.save_as_file('solution.txt', self.has_solution)
+                        Game.save_as_file('solution.txt', Game.check_hamilton())
                         pygame.display.update()
                         print('ulozilo')
             if Game.mode == "test":
