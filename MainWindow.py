@@ -40,7 +40,7 @@ class MainWindow:
         filepath = "mapa" + str(self.level_number) + ".txt"
         Game.initialize(filepath, game_screen)
         if Game.mode == 'experimental':
-            self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (10, 200))
+            self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (20, 560))
         else:
             self.save_button = None
             imp = pygame.image.load("restart.png").convert()
@@ -71,9 +71,9 @@ class MainWindow:
                     if Game.mode == 'experimental':
                         self.has_solution = not self.has_solution
                         if not self.has_solution:
-                            pygame.draw.rect(self.screen, 'darkgreen', [5, 410, 140, 60], 5)
+                            pygame.draw.rect(self.screen, 'darkgreen', [0, 410, 150, 50], 5)
                         else:
-                            pygame.draw.rect(self.screen, '#E8CAB0', [5, 410, 140, 60], 5)
+                            pygame.draw.rect(self.screen, '#E8CAB0', [0, 410, 150, 50], 5)
                         pygame.display.update()
                         time.sleep(0.5)
                     else:
@@ -87,10 +87,10 @@ class MainWindow:
                             imp = pygame.transform.scale(imp, (150, 45))
                             self.solution_button = self.screen.blit(imp, (0, 410))
 
-                            self.solved_level[self.level_number-1] = True
+                            self.solved_level[self.level_number - 1] = True
 
                             self.update_level_and_score()
-                        
+
                 if not Game.mode == 'experimental' and self.restart_button.collidepoint(pos):
                     self.load_game()
 
@@ -101,27 +101,31 @@ class MainWindow:
                         score = 0
                         for lvl in self.solved_level:
                             if lvl:
-                                score+=1
+                                score += 1
                         self.screen.fill(pygame.Color("#D1A38C"), (30, 80, self.window_width, 40))
-                        self.level_and_score = self.screen.blit(self.font.render('Hurá! Prešiel si všetky levely. Tvoje skóre je: ' +str(score)+'/10', True, (0, 50, 0)), (30, 80))
+                        self.level_and_score = self.screen.blit(
+                            self.font.render('Hurá! Prešiel si všetky levely. Tvoje skóre je: ' + str(score) + '/10',
+                                             True, (0, 50, 0)), (30, 80))
                         continue
 
                     self.update_level_and_score()
                     self.load_game()
 
-
                 if Game.mode == 'experimental':
-                    self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (10, 200))
+                    self.save_button = self.screen.blit(self.font.render('Ulozit', True, (0, 50, 0)), (20, 560))
                 else:
                     self.save_button = None
+                    self.screen.fill(pygame.Color("#E8CAB0"), (20, 560, 100, 40))
 
-                if self.save_button:
+                if self.save_button is not None:
                     if self.save_button.collidepoint(pos):
                         Game.save_as_file('solution.txt', self.has_solution)
                         pygame.display.update()
+                        print('ulozilo')
 
-            if not self.solved_level[self.level_number-1] and Game.total_number_of_free_fields == len(Game.player.path):
-                self.solved_level[self.level_number-1] = True
+            if not self.solved_level[self.level_number - 1] and Game.total_number_of_free_fields == len(
+                    Game.player.path):
+                self.solved_level[self.level_number - 1] = True
                 imp = pygame.image.load("spravne.png").convert()
                 imp = pygame.transform.scale(imp, (150, 45))
                 self.solution_button = self.screen.blit(imp, (0, 410))
@@ -145,6 +149,7 @@ class MainWindow:
         score = 0
         for lvl in self.solved_level:
             if lvl:
-                score+=1
-        self.level_and_score = self.screen.blit(self.font.render('level '+str(self.level_number)+
-        '   skóre:'+str(score)+'/10', True, (0, 50, 0)), (30, 80))
+                score += 1
+        self.level_and_score = self.screen.blit(self.font.render('level ' + str(self.level_number) +
+                                                                 '   skóre:' + str(score) + '/10', True, (0, 50, 0)),
+                                                (30, 80))
