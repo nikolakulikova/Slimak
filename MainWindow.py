@@ -75,11 +75,13 @@ class MainWindow:
                         # time.sleep(0.5)
                     else:
                         if Game.has_solution:
+                            print('ma riesenie')
                             imp = pygame.image.load("nespravne.png").convert()
                             imp = pygame.transform.scale(imp, (150, 45))
                             self.solution_button = self.screen.blit(imp, (0, 410))
 
                         else:
+                            print('nema riesenie')
                             imp = pygame.image.load("spravne.png").convert()
                             imp = pygame.transform.scale(imp, (150, 45))
                             self.solution_button = self.screen.blit(imp, (0, 410))
@@ -113,9 +115,9 @@ class MainWindow:
                     self.screen.fill(pygame.Color("#E8CAB0"), (0, 410, 150, 50))
                 else:
                     self.save_button = None
-                    imp = pygame.image.load("neni_riesenia.png").convert()
-                    imp = pygame.transform.scale(imp, (150, 45))
-                    self.solution_button = self.screen.blit(imp, (0, 410))
+                    # imp = pygame.image.load("neni_riesenia.png").convert()
+                    # imp = pygame.transform.scale(imp, (150, 45))
+                    # self.solution_button = self.screen.blit(imp, (0, 410))
                     self.screen.fill(pygame.Color("#E8CAB0"), (20, 560, 100, 40))
                     self.update_level_and_score()
 
